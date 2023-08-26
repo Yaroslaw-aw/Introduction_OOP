@@ -49,21 +49,22 @@ namespace Семинар_1
                                 {
                                     name = "Лимонная";
                                     volume = 1.5;
+                                    purchases.Add(coldDrinksMachine.GetBottleOfWater(name, volume));
                                     break;
                                 }
                             case 2:
                                 {
                                     name = "Коровка";
                                     volume = 0.5;
+                                    purchases.Add(coldDrinksMachine.GetBottleOfMilk(name, volume));
                                     break;
                                 }
                             default:
                                 {
-                                    Console.WriteLine("Вы ввели неправильный номер");
+                                    Console.WriteLine("Введен неверный номер");
                                     break;
                                 }
-                        }
-                        purchases.Add(coldDrinksMachine.GetBottleOfWater(name, volume));
+                        }                        
                         break;
                     }
                 case 2:
@@ -82,10 +83,15 @@ namespace Семинар_1
                                     name = "Латтэ";
                                     volume = 0.4;
                                     temperature = 80;
+                                    purchases.Add(hotDrinksMachine.GetProduct(name, volume, temperature));
                                     break;
                                 }
-                        }
-                        purchases.Add(hotDrinksMachine.GetProduct(name, volume, temperature));
+                            default:
+                                {
+                                    Console.WriteLine("Введен неверный номер");
+                                    break;
+                                }
+                        }                        
                         break;
                     }
                 case 3:
@@ -116,7 +122,6 @@ namespace Семинар_1
                             Product product = new BottleOfWater(name, brand, price, volume);
                             coldDrinksMachine.AddProduct(product);
                         }
-
                         break;
                     }
                 case 4:
@@ -144,7 +149,7 @@ namespace Семинар_1
                     }
                 default:
                     {
-                        Console.WriteLine("Введена неверная цифра");
+                        Console.WriteLine("Введен неверный номер");
                         break;
                     }
             }
