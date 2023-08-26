@@ -30,7 +30,7 @@ namespace Семинар_1
                     Console.WriteLine(purchase.ProductInfo());                    
                 }                
             }
-            Console.WriteLine($"Общая сумма покупок: {sum}");
+            Console.WriteLine($"\nОбщая сумма покупок: {sum}");
 
             int.TryParse(Console.ReadLine(), out int number);
             switch (number)
