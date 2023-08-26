@@ -21,13 +21,17 @@ namespace Семинар_1
 
             Console.WriteLine();
             Console.WriteLine("Ваши покупки:");
+            double sum = 0;
             foreach (var purchase in purchases)
             {
                 if (purchase != null)
                 {
-                    Console.WriteLine(purchase.ProductInfo());
-                }
+                    sum += purchase.Price;
+                    Console.WriteLine(purchase.ProductInfo());                    
+                }                
             }
+            Console.WriteLine($"Общая сумма покупок: {sum}");
+
             int.TryParse(Console.ReadLine(), out int number);
             switch (number)
             {
