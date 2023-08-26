@@ -28,8 +28,8 @@ namespace Семинар_1
                     Console.WriteLine(purchase.ProductInfo());
                 }
             }
-            int.TryParse(Console.ReadLine(), out int nomber);
-            switch (nomber)
+            int.TryParse(Console.ReadLine(), out int number);
+            switch (number)
             {
                 case 0:
                     {
