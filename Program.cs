@@ -6,9 +6,10 @@ using Семинар_1.VendingMachines;
 namespace Семинар_1
 {
     internal class Program
-    {
+    {       
         static void Working(List<Product> purchases, ColdDrinksMachine coldDrinksMachine, HotDrinksMachine hotDrinksMachine)
-        {     
+        {
+            
             Console.Clear();
             Console.WriteLine("Выберете пункт меню:");
             Console.WriteLine($" 1 - Купить холодный напиток\n" +
@@ -206,7 +207,7 @@ namespace Семинар_1
                 bool isCorrectInput = double.TryParse(Console.ReadLine(), out double value);
                 if (!isCorrectInput)
                 {
-                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
+                    return InputDoubleValue("Некорректный ввод. Попробуйте ещё раз");
                 }
                 else return value;
             }
