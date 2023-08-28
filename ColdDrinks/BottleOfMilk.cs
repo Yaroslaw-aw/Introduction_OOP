@@ -9,7 +9,7 @@
         /// <summary>
         /// Создаёт бутылку молока
         /// </summary>
-        public BottleOfMilk() : base("Nonema") { }
+        //public BottleOfMilk() : base("Nonema") { }
 
         /// <summary>
         /// Создаёт бутылку молока

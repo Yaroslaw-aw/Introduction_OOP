@@ -1,68 +1,37 @@
-﻿using Семинар_1.Products;
+﻿using Семинар_1.BaseProduct;
+using Семинар_1.Products;
 
 namespace Семинар_1.VendingMachines
 {
-    internal class ColdDrinksMachine
+    internal class ColdDrinksMachine : BaseVendingMachine
     {
-        protected List<Product> products;
-
         public ColdDrinksMachine()
-        {
-            if (products == null)
-                products = new List<Product>();
-        }
+            : base() { }
 
         public ColdDrinksMachine(List<Product> products)
+        : base(products) { }
+
+        public ColdDrink GetProductByIndex(int index)
         {
-            if (products == null)
-                this.products = new List<Product>();
-            this.products = products;
+            if (index < 0 || index > products.Count)
+                throw new ArgumentOutOfRangeException("index");
+            return (ColdDrink)products[index - 1];
         }
 
-        public void AddProduct(Product product)
-        { products.Add(product); }
-
-        public BottleOfWater GetBottleOfWater(string name, double volume)
+        public override Product GetProduct(string name, double volume)
         {
             foreach (var product in products)
             {
-                if (product is BottleOfWater)
+                if (product is ColdDrink)
                 {
-                    BottleOfWater bottleOfWater = (BottleOfWater)product;
-                    if (product.Name.Equals(name) && bottleOfWater.Volume == volume)
+                    ColdDrink coldDrink = (ColdDrink)product;
+                    if (product.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && coldDrink.Volume == volume)
                     {
-                        return bottleOfWater;
+                        return coldDrink;
                     }
                 }
             }
             return null;
-        }
-
-        public BottleOfMilk GetBottleOfMilk(string name, double volume)
-        {
-            foreach (var product in products)
-            {
-                if (product is BottleOfMilk)
-                {
-                    BottleOfMilk bottleOfMilk = (BottleOfMilk)product;
-                    if (product.Name.Equals(name) && bottleOfMilk.Volume == volume)
-                    {
-                        return bottleOfMilk;
-                    }
-                }
-            }
-            return null;
-        }
-
-        public void ShowAvailability()
-        {
-            int number = 0;
-            foreach(var product in products)
-            {
-                if(products != null)
-                    Console.WriteLine($"{++number}. {product.ProductInfo()}");
-            }
-        }
-
+        }      
     }
 }

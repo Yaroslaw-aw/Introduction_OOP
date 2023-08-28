@@ -1,4 +1,4 @@
-﻿using Семинар_1.Products;
+﻿using Семинар_1.BaseProduct;
 
 namespace Семинар_1.HotDrinks
 {

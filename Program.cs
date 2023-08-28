@@ -1,16 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using Семинар_1.BaseProduct;
 using Семинар_1.HotDrinks;
 using Семинар_1.Products;
 using Семинар_1.VendingMachines;
-
-
 
 namespace Семинар_1
 {
     internal class Program
     {
+        delegate R Input<T, R>(T input);
         static void Working(List<Product> purchases, ColdDrinksMachine coldDrinksMachine, HotDrinksMachine hotDrinksMachine)
-        {
+        {         
+            string Input(string s)
+            {
+                Console.WriteLine(s);
+                return Console.ReadLine();
+            }
+
+            int InputIntValue(string s)
+            {
+                Console.WriteLine(s);
+                bool isCorrectInput = int.TryParse(Console.ReadLine(), out int value);
+                if (!isCorrectInput)
+                {
+                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
+                }
+                else return value;
+            }
+
+            double InputDoubleValue(string s)
+            {
+                Console.WriteLine(s);
+                bool isCorrectInput = double.TryParse(Console.ReadLine(), out double value);
+                if (!isCorrectInput)
+                {
+                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
+                }
+                else return value;
+            }
+
             Console.Clear();
             Console.WriteLine("Выберете пункт меню:");
             Console.WriteLine($" 1 - Купить холодный напиток\n" +
@@ -27,12 +54,12 @@ namespace Семинар_1
                 if (purchase != null)
                 {
                     sum += purchase.Price;
-                    Console.WriteLine(purchase.ProductInfo());                    
-                }                
+                    Console.WriteLine(purchase.ProductInfo());
+                }
             }
             Console.WriteLine($"\nОбщая сумма покупок: {sum}");
 
-            int.TryParse(Console.ReadLine(), out int number);
+            int number = InputIntValue("");
             switch (number)
             {
                 case 0:
@@ -42,112 +69,139 @@ namespace Семинар_1
                     }
                 case 1:
                     {
-                        string name = string.Empty;
-                        double volume = 0;
                         Console.WriteLine("Выберете холодный напиток:");
                         coldDrinksMachine.ShowAvailability();
-                        int.TryParse(Console.ReadLine(), out int nomCold);
-                        switch (nomCold)
+
+                        int numCold = InputIntValue("");
+
+                        if (0 < numCold && numCold <= coldDrinksMachine.Size)
                         {
-                            case 1:
-                                {
-                                    name = "Лимонная";
-                                    volume = 1.5;
-                                    purchases.Add(coldDrinksMachine.GetBottleOfWater(name, volume));
-                                    break;
-                                }
-                            case 2:
-                                {
-                                    name = "Коровка";
-                                    volume = 0.5;
-                                    purchases.Add(coldDrinksMachine.GetBottleOfMilk(name, volume));
-                                    break;
-                                }
-                            default:
-                                {
-                                    Console.WriteLine("Введен неверный номер");
-                                    break;
-                                }
-                        }                        
+                            string name = coldDrinksMachine.GetProductByIndex(numCold).Name;
+                            double volume = coldDrinksMachine.GetProductByIndex(numCold).Volume;
+                            purchases.Add(coldDrinksMachine.GetProduct(name, volume));
+                        }
+                        else
+                        {
+                            Console.WriteLine("Неверный ввод или товара нет в наличии.\r\nНажмите любую клавишу для продолжения");
+                            Console.ReadKey();
+                        }
+
                         break;
                     }
+
                 case 2:
                     {
-                        string name = string.Empty;
-                        double volume = 0;
-                        int temperature = 0;
-
                         Console.WriteLine("Выберете горячий напиток:");
                         hotDrinksMachine.ShowAvailability();
-                        int.TryParse(Console.ReadLine(), out int nomHot);
-                        switch (nomHot)
+
+                        int numHot = InputIntValue("");
+
+                        if (0 < numHot && numHot <= hotDrinksMachine.Size)
                         {
-                            case 1:
-                                {
-                                    name = "Латтэ";
-                                    volume = 0.4;
-                                    temperature = 80;
-                                    purchases.Add(hotDrinksMachine.GetProduct(name, volume, temperature));
-                                    break;
-                                }
-                            default:
-                                {
-                                    Console.WriteLine("Введен неверный номер");
-                                    break;
-                                }
-                        }                        
+                            string name = hotDrinksMachine.GetProductByIndex(numHot).Name;
+                            double volume = hotDrinksMachine.GetProductByIndex(numHot).Volume;
+                            int temperature = hotDrinksMachine.GetProductByIndex(numHot).Temperature;
+                            purchases.Add(hotDrinksMachine.GetProduct(name, volume, temperature));
+                        }
+                        else
+                        {
+                            Console.WriteLine("Неверный ввод или товара нет в наличии.\r\nНажмите любую клавишу для продолжения");
+                            Console.ReadKey();
+                        }
+
                         break;
                     }
-                case 3:
+                case 3: // Добавление холодного напитка
                     {
-                        string name = string.Empty;
-                        string brand = string.Empty;
-                        double price = 0;
-                        double volume = 0;
-                        double fat = double.NaN;
-                        Console.WriteLine("Введите название напитка:");
-                        name = Console.ReadLine();
-                        Console.WriteLine("Введите брэнд напитка:");
-                        brand = Console.ReadLine();
-                        Console.WriteLine("Введите название цену напитка:");
-                        double.TryParse(Console.ReadLine(), out price);
-                        Console.WriteLine("Введите объём напитка:");
-                        double.TryParse(Console.ReadLine(), out volume);
-                        Console.WriteLine("Введите жирность напитка, если она присутствует:");
-                        double.TryParse(Console.ReadLine(), out fat);
+                        string name = Input("Введите название напитка:");
+                        string brand = Input("Введите название брэнда:");
+                        double price = InputDoubleValue("Введите цену напитка:");
+                        double volume = InputDoubleValue("Введите объём напитка:");
+                        double fat = InputDoubleValue("Введите жирность напитка или 0 если жира нет:");
 
-                        if (fat != null)
+                        void ChoiseWaterOrMilk(string text = $" Если это вода, нажмите - 1 \r\n Если это обезжиренное молоко - 2")
+                        {
+                            Console.WriteLine(text);
+                            bool isCorrectChoise = int.TryParse(Console.ReadLine(), out int choice);
+                            if (!isCorrectChoise || choice != 1 && choice != 2)
+                            {
+                                ChoiseWaterOrMilk("Некорректный ввод, попробуйте ещё раз.\r\n" + $" Если это вода, нажмите - 1 \r\n Если это обезжиренное молоко - 2");
+                            }
+                            else if (choice == 1)
+                            {
+                                Product product = new BottleOfWater(name, brand, price, volume);
+                                coldDrinksMachine.AddProduct(product);
+                                Console.WriteLine("Вода добавлена. Нажмите любую клавишу для продолжения");
+                                Console.ReadKey();
+                            }
+                            else if (choice == 2)
+                            {
+                                Product product = new BottleOfMilk(name, brand, price, volume, fat);
+                                coldDrinksMachine.AddProduct(product);
+                                Console.WriteLine("Молоко добавлено. Нажмите любую клавишу для продолжения");
+                                Console.ReadKey();
+                            }
+                        }
+
+                        if (fat != 0)
                         {
                             Product product = new BottleOfMilk(name, brand, price, volume, fat);
+                            Console.WriteLine("Бутылка молока добавлена");
+                            Console.ReadKey();
                             coldDrinksMachine.AddProduct(product);
                         }
                         else
                         {
-                            Product product = new BottleOfWater(name, brand, price, volume);
-                            coldDrinksMachine.AddProduct(product);
+                            ChoiseWaterOrMilk();
                         }
+
                         break;
                     }
-                case 4:
+                case 4: // Добавление горячего напитка
                     {
-                        string name = string.Empty;
-                        string brand = string.Empty;
-                        double price = 0;
-                        double volume = 0;
-                        int temperature = 0;
-                        Console.WriteLine("Введите название напитка:");
-                        name = Console.ReadLine();
-                        Console.WriteLine("Введите брэнд напитка:");
-                        brand = Console.ReadLine();
-                        Console.WriteLine("Введите название цену напитка:");
-                        double.TryParse(Console.ReadLine(), out price);
-                        Console.WriteLine("Введите объём напитка:");
-                        double.TryParse(Console.ReadLine(), out volume);
-                        Console.WriteLine("Введите температуру напитка:");
-                        int.TryParse(Console.ReadLine(), out temperature);
+                        string name = Input("Введите название напитка:");
+                        string brand = Input("Введите название брэнда:");
 
-                        HotDrink hotDrink = new Coffee(name, brand, price, volume, temperature);
-                        hotDrinksMachine.AddProduct(hotDrink);
+                        double price = InputDoubleValue("Введите цену напитка:");
+                        double volume = InputDoubleValue("Введите объём напитка:");
+                        int temperature = InputIntValue("Введите температуру напитка:");
+                        double fat = InputDoubleValue("Введите жирность напитка или 0 если жира нет:");
+
+                        void ChoiseCocoaOrCoffee(string text = $" Если это какао, нажмите - 1 \r\n Если это кофе - 2")
+                        {
+                            Console.WriteLine(text);
+                            bool isCorrectChoise = int.TryParse(Console.ReadLine(), out int choice);
+                            if (!isCorrectChoise || choice != 1 && choice != 2)
+                            {
+                                ChoiseCocoaOrCoffee("Некорректный ввод, попробуйте ещё раз.\r\n" + $" Если это какао, нажмите - 1 \r\n Если это кофе - 2");
+                            }
+                            else if (choice == 1)
+                            {
+                                HotDrink hotDrink = new Cocoa(name, brand, price, volume, temperature);
+                                hotDrinksMachine.AddProduct(hotDrink);
+                                Console.WriteLine("Какао добавлено. Нажмите любую клавишу для продолжения");
+                                Console.ReadKey();
+                            }
+                            else if (choice == 2)
+                            {
+                                HotDrink hotDrink = new Coffee(name, brand, price, volume, temperature, fat);
+                                hotDrinksMachine.AddProduct(hotDrink);
+                                Console.WriteLine("Кофе добавлен. Нажмите любую клавишу для продолжения");
+                                Console.ReadKey();
+                            }
+                        }
+
+                        if (fat != 0)
+                        {
+                            HotDrink hotDrink = new Coffee(name, brand, price, volume, temperature, fat);
+                            hotDrinksMachine.AddProduct(hotDrink);
+                            Console.WriteLine("Кофе добавлен. Нажмите любую клавишу для продолжения");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            ChoiseCocoaOrCoffee();
+                        }
 
                         break;
                     }
@@ -177,25 +231,25 @@ namespace Семинар_1
             Console.WriteLine(water1.ProductInfo());
             Console.WriteLine(milk1.ProductInfo());
 
-            Product coffee1 = new Coffee("Латтэ", "МакКофе", 130, 0.4, 80);
-            Console.WriteLine(((Coffee)coffee1).ProductInfo());
+            Product cocoa = new Cocoa("Какао", "Несквик", 130, 0.4, 80);
+            Console.WriteLine(((Cocoa)cocoa).ProductInfo());
 
-            ColdDrinksMachine coldDrinks1 = new ColdDrinksMachine(products1);
+            ColdDrinksMachine coldDrinks1 = new ColdDrinksMachine();
+            coldDrinks1.AddProduct(water1);
+            coldDrinks1.AddProduct(milk1);
 
             Console.WriteLine("\nВы купили:");
-            Console.WriteLine(coldDrinks1.GetBottleOfWater("Лимонная", 1.5).ProductInfo());
+            Console.WriteLine(coldDrinks1.GetProduct("Лимонная", 1.5).ProductInfo());
 
             HotDrinksMachine hotDrinks1 = new HotDrinksMachine();
 
-            hotDrinks1.AddProduct(coffee1);
-            Console.WriteLine("\nВы купили:");
-            Console.WriteLine(hotDrinks1.GetProduct("Латтэ", 0.4, 80).ProductInfo());
+            hotDrinks1.AddProduct(cocoa);
 
             Console.ReadKey();
 
             List<Product> purchases = new List<Product>();
 
-            Working(purchases, coldDrinks1, hotDrinks1);
+            Working( purchases /*new List<Product>()*/, coldDrinks1 /*new ColdDrinksMachine()*/, hotDrinks1 /*new HotDrinksMachine()*/);
         }
     }
 }

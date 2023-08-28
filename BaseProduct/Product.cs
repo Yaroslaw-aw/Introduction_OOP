@@ -1,4 +1,4 @@
-﻿namespace Семинар_1.Products
+﻿namespace Семинар_1.BaseProduct
 {
     internal abstract class Product
     {
@@ -15,9 +15,9 @@
             {
                 if (value < 100)
                 {
-                    throw new ArgumentException("Некорректная цена товара");
+                    price = 100;
                 }
-                price = value;
+                else price = value;
             }
         }
 
@@ -32,15 +32,9 @@
 
         public Product(string name, string brand, double price)
         {
-            CheckName(name);
-            CheckBrand(brand);
-
-            if (price < 100)
-            {
-                throw new ArgumentException("Некорректная цена товара.");
-            }
-
-            this.price = price;
+            Name = name;
+            Brand = brand;
+            Price = price;
         }
 
         void CheckName(string name)
@@ -59,8 +53,7 @@
 
         public virtual string ProductInfo()
         {
-            
-           return string.Format($"{this.GetType().Name}   {this.Name}; Брэнд - {this.Brand}; Цена - {this.Price}");
+            return string.Format($"{GetType().Name}   {Name}; Брэнд - {Brand}; Цена - {Price}");
         }
     }
 }

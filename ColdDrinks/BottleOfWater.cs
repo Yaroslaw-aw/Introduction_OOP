@@ -1,22 +1,18 @@
 ﻿namespace Семинар_1.Products
 {
-    internal class BottleOfWater : Product
+    internal class BottleOfWater : ColdDrink
     {
-        double volume; // Объём
-
-        public double Volume { get { return volume; } }
-
         /// <summary>
         /// Создаёт бутылку воды
         /// </summary>
-        public BottleOfWater() : base("Nonema") { }
+        //public BottleOfWater() : base("Nonema") { }
 
         /// <summary>
         /// Создаёт бутылку воды
         /// </summary>
         /// <param name="name">Название</param>
-        public BottleOfWater(string name)
-            : base(name, "Noname") { }
+        //public BottleOfWater(string name)
+        //    : base(name, "Noname") { }
 
         /// <summary>
         /// Создаёт бутылку воды
@@ -45,7 +41,7 @@
         public BottleOfWater(string name, string brand, double price, double volume)
             : base(name, brand, price)
         {
-            this.volume = volume;
+            base.Volume = volume;
         }
 
         public override string ProductInfo()
