@@ -7,37 +7,8 @@ namespace Семинар_1
 {
     internal class Program
     {
-        delegate R Input<T, R>(T input);
         static void Working(List<Product> purchases, ColdDrinksMachine coldDrinksMachine, HotDrinksMachine hotDrinksMachine)
-        {         
-            string Input(string s)
-            {
-                Console.WriteLine(s);
-                return Console.ReadLine();
-            }
-
-            int InputIntValue(string s)
-            {
-                Console.WriteLine(s);
-                bool isCorrectInput = int.TryParse(Console.ReadLine(), out int value);
-                if (!isCorrectInput)
-                {
-                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
-                }
-                else return value;
-            }
-
-            double InputDoubleValue(string s)
-            {
-                Console.WriteLine(s);
-                bool isCorrectInput = double.TryParse(Console.ReadLine(), out double value);
-                if (!isCorrectInput)
-                {
-                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
-                }
-                else return value;
-            }
-
+        {     
             Console.Clear();
             Console.WriteLine("Выберете пункт меню:");
             Console.WriteLine($" 1 - Купить холодный напиток\n" +
@@ -210,6 +181,34 @@ namespace Семинар_1
                         Console.WriteLine("Введен неверный номер");
                         break;
                     }
+            }
+
+            string Input(string s)
+            {
+                Console.WriteLine(s);
+                return Console.ReadLine();
+            }
+
+            int InputIntValue(string s)
+            {
+                Console.WriteLine(s);
+                bool isCorrectInput = int.TryParse(Console.ReadLine(), out int value);
+                if (!isCorrectInput)
+                {
+                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
+                }
+                else return value;
+            }
+
+            double InputDoubleValue(string s)
+            {
+                Console.WriteLine(s);
+                bool isCorrectInput = double.TryParse(Console.ReadLine(), out double value);
+                if (!isCorrectInput)
+                {
+                    return InputIntValue("Некорректный ввод. Попробуйте ещё раз");
+                }
+                else return value;
             }
 
             Working(purchases, coldDrinksMachine, hotDrinksMachine);
