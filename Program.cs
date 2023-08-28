@@ -7,7 +7,6 @@ namespace Семинар_1
 {
     internal class Program
     {
-        delegate R Input<T, R>(T input);
         static void Working(List<Product> purchases, ColdDrinksMachine coldDrinksMachine, HotDrinksMachine hotDrinksMachine)
         {         
             string Input(string s)
